@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="VV2-jY-ErE">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Photo Viewer View Controller-->
+        <scene sceneID="zoV-SX-GQn">
+            <objects>
+                <viewController id="VV2-jY-ErE" customClass="PhotoViewerViewController" customModule="flickerSwift" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="CQ0-He-GWd">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="9Dq-rf-9eI" userLabel="Big Collection View">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="GuY-EW-6TB">
+                                    <size key="itemSize" width="290" height="418"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" reuseIdentifier="PhotoCell" id="hO4-HV-esw" customClass="PhotoCollectionViewCell" customModule="flickerSwift" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="200" width="290" height="418"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="290" height="418"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </view>
+                                    </collectionViewCell>
+                                </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="VV2-jY-ErE" id="GI4-tZ-FgT"/>
+                                    <outlet property="delegate" destination="VV2-jY-ErE" id="o2Y-0j-OE4"/>
+                                </connections>
+                            </collectionView>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Zqy-rK-IZo" userLabel="Small Collection View">
+                                <rect key="frame" x="0.0" y="758" width="414" height="104"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="104" id="6ZH-9s-jgH"/>
+                                </constraints>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="DuN-O4-Lbx">
+                                    <size key="itemSize" width="89" height="108"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PhotoCell" id="Bzl-yA-fcs" customClass="PhotoCollectionViewCell" customModule="flickerSwift" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="-2" width="89" height="108"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="89" height="108"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </view>
+                                    </collectionViewCell>
+                                </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="VV2-jY-ErE" id="N9X-Ek-PHK"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Zqy-rK-IZo" firstAttribute="trailing" secondItem="YMg-Ho-LIe" secondAttribute="trailing" id="0ou-0e-xON"/>
+                            <constraint firstItem="Zqy-rK-IZo" firstAttribute="leading" secondItem="YMg-Ho-LIe" secondAttribute="leading" id="Cc0-Do-3tg"/>
+                            <constraint firstItem="9Dq-rf-9eI" firstAttribute="leading" secondItem="YMg-Ho-LIe" secondAttribute="leading" id="D20-OL-uzd"/>
+                            <constraint firstItem="9Dq-rf-9eI" firstAttribute="top" secondItem="YMg-Ho-LIe" secondAttribute="top" id="R3l-e8-jHl"/>
+                            <constraint firstItem="YMg-Ho-LIe" firstAttribute="bottom" secondItem="9Dq-rf-9eI" secondAttribute="bottom" id="T5D-n4-KXl"/>
+                            <constraint firstItem="9Dq-rf-9eI" firstAttribute="trailing" secondItem="YMg-Ho-LIe" secondAttribute="trailing" id="TGB-b3-Hg1"/>
+                            <constraint firstItem="Zqy-rK-IZo" firstAttribute="bottom" secondItem="YMg-Ho-LIe" secondAttribute="bottom" id="uZP-N2-xSJ"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="YMg-Ho-LIe"/>
+                    </view>
+                    <connections>
+                        <outlet property="bigCollectionView" destination="9Dq-rf-9eI" id="pZa-lL-wml"/>
+                        <outlet property="smallCollectionView" destination="Zqy-rK-IZo" id="P6Q-j4-rNE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UEg-N6-pSQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-681.15942028985512" y="-48.214285714285715"/>
+        </scene>
+    </scenes>
+</document>

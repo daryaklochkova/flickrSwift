@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="N2h-3U-0tk">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--ProfileViewController-->
+        <scene sceneID="FPi-aV-QHD">
+            <objects>
+                <viewController storyboardIdentifier="ProfileViewController" title="ProfileViewController" id="N2h-3U-0tk" customClass="ProfileViewController" customModule="flickerSwift" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" restorationIdentifier="ProfileViewController" id="ftd-BU-bw8">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="X6c-0m-2a8">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Chf-xO-hUP">
+                                    <size key="itemSize" width="110" height="110"/>
+                                    <size key="headerReferenceSize" width="50" height="199"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="10" minY="10" maxX="10" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" restorationIdentifier="PhotoCell" reuseIdentifier="PhotoCell" id="Uy4-Ep-EV1" customClass="PhotoCollectionViewCell" customModule="flickerSwift" customModuleProvider="target">
+                                        <rect key="frame" x="10" y="209" width="110" height="110"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="110" height="110"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </view>
+                                    </collectionViewCell>
+                                </cells>
+                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="ProfileHeader" id="LsY-8Q-iRx" customClass="ProfileHeaderView" customModule="flickerSwift" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="199"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </collectionReusableView>
+                                <connections>
+                                    <outlet property="dataSource" destination="N2h-3U-0tk" id="FrJ-4B-QxW"/>
+                                    <outlet property="delegate" destination="N2h-3U-0tk" id="Eo3-nt-Twk"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="X6c-0m-2a8" firstAttribute="top" secondItem="QdU-eo-SdK" secondAttribute="top" id="9Fx-Zb-uhW"/>
+                            <constraint firstItem="X6c-0m-2a8" firstAttribute="trailing" secondItem="QdU-eo-SdK" secondAttribute="trailing" id="PMe-Zl-BVD"/>
+                            <constraint firstItem="QdU-eo-SdK" firstAttribute="bottom" secondItem="X6c-0m-2a8" secondAttribute="bottom" id="h5K-gQ-m8P"/>
+                            <constraint firstItem="X6c-0m-2a8" firstAttribute="leading" secondItem="QdU-eo-SdK" secondAttribute="leading" id="iCn-Yl-PNh"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="QdU-eo-SdK"/>
+                    </view>
+                    <connections>
+                        <outlet property="photosCollectionView" destination="X6c-0m-2a8" id="UZe-Am-XgB"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="W1B-QV-Qms" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="27.536231884057973" y="158.70535714285714"/>
+        </scene>
+    </scenes>
+</document>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProfileHeaderView" customModule="flickerSwift" customModuleProvider="target">
+            <connections>
+                <outlet property="backgroundeimage" destination="P1W-hI-N80" id="NKX-3W-g1L"/>
+                <outlet property="followersCount" destination="tlf-bo-gd3" id="WAa-po-9hH"/>
+                <outlet property="headerView" destination="pAK-gP-Pgc" id="EJE-aJ-Xci"/>
+                <outlet property="profileImage" destination="VL3-Pp-0XB" id="B2f-Rg-Fbk"/>
+                <outlet property="userName" destination="yxg-OR-PTv" id="CkE-gm-qfn"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionReusableView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ProfileHeader" id="pAK-gP-Pgc">
+            <rect key="frame" x="0.0" y="0.0" width="1299" height="815"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="P1W-hI-N80" userLabel="BackgroundImage">
+                    <rect key="frame" x="0.0" y="44" width="1299" height="737"/>
+                </imageView>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="eZb-54-05i">
+                    <rect key="frame" x="216.5" y="167" width="866" height="491"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NoPhoto" translatesAutoresizingMaskIntoConstraints="NO" id="VL3-Pp-0XB" userLabel="Profile image">
+                            <rect key="frame" x="0.0" y="0.0" width="866" height="282.5"/>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yxg-OR-PTv" userLabel="User name">
+                            <rect key="frame" x="0.0" y="292.5" width="866" height="94.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tlf-bo-gd3" userLabel="Followers count">
+                            <rect key="frame" x="0.0" y="397" width="866" height="94"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="yxg-OR-PTv" firstAttribute="height" secondItem="VL3-Pp-0XB" secondAttribute="height" multiplier="1:3" id="Eem-0r-ttz"/>
+                        <constraint firstItem="yxg-OR-PTv" firstAttribute="height" secondItem="tlf-bo-gd3" secondAttribute="height" id="MS3-gr-HIS"/>
+                    </constraints>
+                </stackView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="P1W-hI-N80" firstAttribute="leading" secondItem="rhV-g7-YwX" secondAttribute="leading" id="Lu4-dc-2N1"/>
+                <constraint firstItem="P1W-hI-N80" firstAttribute="top" secondItem="rhV-g7-YwX" secondAttribute="top" id="TNC-LA-gQP"/>
+                <constraint firstItem="eZb-54-05i" firstAttribute="height" secondItem="rhV-g7-YwX" secondAttribute="height" multiplier="1:1.5" id="blQ-TI-Nu2"/>
+                <constraint firstItem="eZb-54-05i" firstAttribute="centerX" secondItem="rhV-g7-YwX" secondAttribute="centerX" id="k8o-qI-t8P"/>
+                <constraint firstItem="eZb-54-05i" firstAttribute="centerY" secondItem="rhV-g7-YwX" secondAttribute="centerY" id="kqh-Zy-S1O"/>
+                <constraint firstItem="rhV-g7-YwX" firstAttribute="bottom" secondItem="P1W-hI-N80" secondAttribute="bottom" id="qOC-V9-xZI"/>
+                <constraint firstItem="rhV-g7-YwX" firstAttribute="trailing" secondItem="P1W-hI-N80" secondAttribute="trailing" id="vBk-zS-eBU"/>
+                <constraint firstItem="eZb-54-05i" firstAttribute="width" secondItem="rhV-g7-YwX" secondAttribute="width" multiplier="1:1.5" id="ydu-Zb-fbT"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="rhV-g7-YwX"/>
+            <point key="canvasLocation" x="555.07246376811599" y="665.625"/>
+        </collectionReusableView>
+    </objects>
+    <resources>
+        <image name="NoPhoto" width="225" height="225"/>
+    </resources>
+</document>
