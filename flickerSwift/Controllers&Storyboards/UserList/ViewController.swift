@@ -18,6 +18,7 @@ class ViewController: UIViewController, UITableViewDataSource, UISearchResultsUp
     var users = [User]()
     let searchController = UISearchController(searchResultsController: nil)
     
+    //MARK: Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -44,6 +45,7 @@ class ViewController: UIViewController, UITableViewDataSource, UISearchResultsUp
         return false
     }
     
+    //MARK: Notifications handlers
     @objc func userUpdated(notification: Notification) {
         if let object = notification.object as? User {
             for user in users {
@@ -76,7 +78,7 @@ class ViewController: UIViewController, UITableViewDataSource, UISearchResultsUp
         })
     }
     
-    
+    //MARK: UITableViewDelegate implementation
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return users.count
     }

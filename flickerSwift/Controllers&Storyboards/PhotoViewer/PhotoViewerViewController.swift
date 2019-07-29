@@ -10,55 +10,157 @@ import UIKit
 
 class PhotoViewerViewController: BasePhotoViewController, UICollectionViewDelegate {
     
+    //MARK: Outlets
     @IBOutlet weak var smallCollectionView: UICollectionView!
     @IBOutlet weak var bigCollectionView: UICollectionView!
     
+    //MARK:
     var currentCellIndexPath: IndexPath!
     
+    
+    //MARK: Life cycle functions
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if currentCellIndexPath == nil {
             currentCellIndexPath = IndexPath(row: 0, section: 0)
         }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(orientationChanged(notification:)), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        scrollToItem(at: currentCellIndexPath)
+        bigCollectionView.reloadItems(at: [currentCellIndexPath])
+    }
+    
+    //MARK: User actions handlers
+    @IBAction func onceTap(_ sender: Any) {
+        if smallCollectionView.isHidden {
+            smallCollectionView.isHidden = false
+        } else {
+            smallCollectionView.isHidden = true
+        }
+    }
+    
+    @IBAction func swipeToBottom(_ sender: Any) {
+        let transition = createTrancitionAnimation(direction: CATransitionSubtype.fromBottom)
+        self.navigationController?.view.layer.add(transition, forKey: nil)
+        self.navigationController?.popViewController(animated: false)
+    }
+    
+    @IBAction func swipeToUp(_ sender: Any) {
+        let transition = createTrancitionAnimation(direction: CATransitionSubtype.fromTop)
+        self.navigationController?.view.layer.add(transition, forKey: nil)
+        self.navigationController?.popViewController(animated: false)
+    }
+    
+    //MARK: Trancition animation
+    func createTrancitionAnimation(direction: CATransitionSubtype) -> CATransition {
+        let transition = CATransition()
+        transition.duration = 0.5
+        transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+        transition.type = CATransitionType.reveal
+        transition.subtype = direction
+        
+        return transition
+    }
+    
+    
+    @objc func orientationChanged(notification:Notification) {
+        bigCollectionView.collectionViewLayout.invalidateLayout()
+        smallCollectionView.collectionViewLayout.invalidateLayout()
+        
+        bigCollectionView.scrollToItem(at: currentCellIndexPath, at: .centeredHorizontally, animated: false)
+        smallCollectionView.scrollToItem(at: currentCellIndexPath, at: .centeredHorizontally, animated: false)
+        
+        bigCollectionView.reloadItems(at: [currentCellIndexPath])
+    }
+    
+
+    //MARK: UIcrollViewDelegate implementation
+    func scrollToItem(at index: IndexPath, animated: Bool = false) {
+        bigCollectionView.scrollToItem(at: index, at: .centeredHorizontally, animated: animated)
+        smallCollectionView.scrollToItem(at: index, at: .centeredHorizontally, animated: animated)
+    }
+    
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         
-        var currentCell: UICollectionViewCell?
+        guard let collectionView = scrollView as? UICollectionView,
+            collectionView == bigCollectionView else {
+                return
+        }
+        
+        var targetOffset: CGPoint?
         
         if velocity.x == 0 {
             let visibleCells = bigCollectionView.visibleCells
             
-            currentCell = visibleCells[0]
             for cell in visibleCells {
+                var visibleArea: CGFloat
                 if cell.frame.origin.x < scrollView.contentOffset.x {
-                    let visibleArea = cell.frame.origin.x + cell.frame.width - scrollView.contentOffset.x
+                    visibleArea = cell.frame.origin.x + cell.frame.width - scrollView.contentOffset.x
+                } else {
+                    visibleArea = scrollView.contentOffset.x + cell.frame.width - cell.frame.origin.x
+                }
+                
+                if visibleArea > (cell.frame.width / 2) {
+                    targetOffset = cell.frame.origin
                     
-                    if visibleArea > (cell.frame.width / 2) {
-                        currentCell = cell
+                    if let indexPath = bigCollectionView.indexPath(for: cell) {
+                        currentCellIndexPath = indexPath
                     }
                 }
             }
             
-        } else if velocity.x > 0 {
-            let row = currentCellIndexPath.row
-            let nextIndexPath = IndexPath(row: row + 1, section: 0)
-            currentCell = bigCollectionView.cellForItem(at: nextIndexPath)
-        } else if velocity.x < 0 {
-            let row = currentCellIndexPath.row
-            let nextIndexPath = IndexPath(row: row - 1, section: 0)
-            currentCell = bigCollectionView.cellForItem(at: nextIndexPath)
+        } else {
+            var row = currentCellIndexPath.row
+        
+            if velocity.x > 0 {
+                row += 1
+            } else {
+                row -= 1
+            }
+            
+            let nextIndexPath = IndexPath(row: row, section: 0)
+            if (nextIndexPath[1] < photos?.count ?? 0) && (nextIndexPath[1] >= 0) {
+                let frame = bigCollectionView.collectionViewLayout.layoutAttributesForItem(at: nextIndexPath)?.frame
+                targetOffset = frame?.origin
+                currentCellIndexPath = nextIndexPath
+            }
         }
         
-        if let selectedCell = currentCell, let indexPath = bigCollectionView.indexPath(for: selectedCell) {
-            targetContentOffset.pointee = selectedCell.frame.origin
-            currentCellIndexPath = indexPath
+        if let targetOffset = targetOffset {
+            targetContentOffset.pointee = targetOffset
+            smallCollectionView.scrollToItem(at: currentCellIndexPath, at: .centeredHorizontally, animated: true)
         }
     }
+    
+    //MARK: UICollectionViewDelegate implementation
+    func collectionView(_ collectionView: UICollectionView,
+                        didHighlightItemAt indexPath: IndexPath) {
+        guard collectionView == smallCollectionView else {
+            return
+        }
+        currentCellIndexPath = indexPath
+        scrollToItem(at: indexPath)
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView,
+                                 cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = super.collectionView(collectionView, cellForItemAt: indexPath)
+        
+        if let cell = cell as? PhotoCollectionViewCell, collectionView === bigCollectionView {
+            cell.enableZoom(zoomScale: 3)
+        }
+        
+        return cell
+    }
+    
 }
-
-
 
 extension PhotoViewerViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

@@ -13,13 +13,14 @@
         <scene sceneID="zoV-SX-GQn">
             <objects>
                 <viewController id="VV2-jY-ErE" customClass="PhotoViewerViewController" customModule="flickerSwift" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="CQ0-He-GWd">
+                    <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="CQ0-He-GWd">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="9Dq-rf-9eI" userLabel="Big Collection View">
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <gestureRecognizers/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="GuY-EW-6TB">
                                     <size key="itemSize" width="290" height="418"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -27,7 +28,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" reuseIdentifier="PhotoCell" id="hO4-HV-esw" customClass="PhotoCollectionViewCell" customModule="flickerSwift" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" reuseIdentifier="PhotoCell" id="hO4-HV-esw" customClass="PhotoCollectionViewCell" customModule="flickerSwift" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="200" width="290" height="418"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
@@ -39,6 +40,9 @@
                                 <connections>
                                     <outlet property="dataSource" destination="VV2-jY-ErE" id="GI4-tZ-FgT"/>
                                     <outlet property="delegate" destination="VV2-jY-ErE" id="o2Y-0j-OE4"/>
+                                    <outletCollection property="gestureRecognizers" destination="r30-bE-VMR" appends="YES" id="RBK-9f-zI8"/>
+                                    <outletCollection property="gestureRecognizers" destination="98b-Ew-JPd" appends="YES" id="W7H-hj-5vS"/>
+                                    <outletCollection property="gestureRecognizers" destination="coX-w7-tA4" appends="YES" id="u5e-DN-eCb"/>
                                 </connections>
                             </collectionView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Zqy-rK-IZo" userLabel="Small Collection View">
@@ -65,6 +69,7 @@
                                 </cells>
                                 <connections>
                                     <outlet property="dataSource" destination="VV2-jY-ErE" id="N9X-Ek-PHK"/>
+                                    <outlet property="delegate" destination="VV2-jY-ErE" id="3ob-He-63g"/>
                                 </connections>
                             </collectionView>
                         </subviews>
@@ -86,6 +91,21 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UEg-N6-pSQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="up" id="r30-bE-VMR">
+                    <connections>
+                        <action selector="swipeToUp:" destination="VV2-jY-ErE" id="O5H-fD-6cj"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <swipeGestureRecognizer direction="down" id="98b-Ew-JPd">
+                    <connections>
+                        <action selector="swipeToBottom:" destination="VV2-jY-ErE" id="MZ8-Xu-x8f"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <tapGestureRecognizer id="coX-w7-tA4">
+                    <connections>
+                        <action selector="onceTap:" destination="VV2-jY-ErE" id="B0W-sx-3rc"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-681.15942028985512" y="-48.214285714285715"/>
         </scene>

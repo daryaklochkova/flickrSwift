@@ -27,6 +27,8 @@
 		A0B5716722DCBED5007CDCE1 /* FlickrRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B5716622DCBED5007CDCE1 /* FlickrRequest.swift */; };
 		A0B5716922DCCDA4007CDCE1 /* UserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0B5716822DCCDA4007CDCE1 /* UserCell.xib */; };
 		A0B5716B22DCCFC1007CDCE1 /* UserCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B5716A22DCCFC1007CDCE1 /* UserCellView.swift */; };
+		A0CBF7F822EAEAE900FD730F /* ScrollViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CBF7F722EAEAE900FD730F /* ScrollViewExtension.swift */; };
+		A0CBF83922EB3AE300FD730F /* CellSizeProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = A0CBF83822EB3AE300FD730F /* CellSizeProvider.m */; };
 		A0DD187B22E5BEEE00F6408E /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DD187A22E5BEEE00F6408E /* Photo.swift */; };
 		A0F3640122E717C30079730C /* PhotoViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F3640022E717C30079730C /* PhotoViewerViewController.swift */; };
 		A0F3640322E717D70079730C /* PhotoViewer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0F3640222E717D70079730C /* PhotoViewer.storyboard */; };
@@ -56,6 +58,10 @@
 		A0B5716622DCBED5007CDCE1 /* FlickrRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrRequest.swift; sourceTree = "<group>"; };
 		A0B5716822DCCDA4007CDCE1 /* UserCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserCell.xib; sourceTree = "<group>"; };
 		A0B5716A22DCCFC1007CDCE1 /* UserCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCellView.swift; sourceTree = "<group>"; };
+		A0CBF7F722EAEAE900FD730F /* ScrollViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewExtension.swift; sourceTree = "<group>"; };
+		A0CBF83622EB3AE300FD730F /* flickerSwift-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "flickerSwift-Bridging-Header.h"; sourceTree = "<group>"; };
+		A0CBF83722EB3AE300FD730F /* CellSizeProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CellSizeProvider.h; sourceTree = "<group>"; };
+		A0CBF83822EB3AE300FD730F /* CellSizeProvider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CellSizeProvider.m; sourceTree = "<group>"; };
 		A0DD187A22E5BEEE00F6408E /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		A0F3640022E717C30079730C /* PhotoViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewerViewController.swift; sourceTree = "<group>"; };
 		A0F3640222E717D70079730C /* PhotoViewer.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PhotoViewer.storyboard; sourceTree = "<group>"; };
@@ -87,6 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				A060868C22E0BEFE00CA8C4F /* NotificationCenter.swift */,
+				A0CBF7F722EAEAE900FD730F /* ScrollViewExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -94,10 +101,12 @@
 		A060869022E1B4CB00CA8C4F /* Controllers&Storyboards */ = {
 			isa = PBXGroup;
 			children = (
+				A0CBF83A22EB3B2300FD730F /* CellSizeProvider */,
+				A0F3640922E729C90079730C /* BasePhotoViewController.swift */,
 				A0F363FF22E7178E0079730C /* PhotoViewer */,
 				A060869222E1B4F200CA8C4F /* Profile */,
 				A060869122E1B4DD00CA8C4F /* UserList */,
-				A0F3640922E729C90079730C /* BasePhotoViewController.swift */,
+				A0CBF83622EB3AE300FD730F /* flickerSwift-Bridging-Header.h */,
 			);
 			path = "Controllers&Storyboards";
 			sourceTree = "<group>";
@@ -200,6 +209,15 @@
 			path = UserCellView;
 			sourceTree = "<group>";
 		};
+		A0CBF83A22EB3B2300FD730F /* CellSizeProvider */ = {
+			isa = PBXGroup;
+			children = (
+				A0CBF83722EB3AE300FD730F /* CellSizeProvider.h */,
+				A0CBF83822EB3AE300FD730F /* CellSizeProvider.m */,
+			);
+			path = CellSizeProvider;
+			sourceTree = "<group>";
+		};
 		A0DD188122E5F07400F6408E /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
@@ -249,6 +267,7 @@
 				TargetAttributes = {
 					A0B5714D22DCB7EF007CDCE1 = {
 						CreatedOnToolsVersion = 10.2.1;
+						LastSwiftMigration = 1030;
 					};
 				};
 			};
@@ -300,6 +319,7 @@
 				A060869422E1B54000CA8C4F /* ProfileViewController.swift in Sources */,
 				A0B5715422DCB7EF007CDCE1 /* ViewController.swift in Sources */,
 				A043032E22E04E4900D2411E /* User.swift in Sources */,
+				A0CBF83922EB3AE300FD730F /* CellSizeProvider.m in Sources */,
 				A060868722E099F500CA8C4F /* DataProvider.swift in Sources */,
 				A0B5716722DCBED5007CDCE1 /* FlickrRequest.swift in Sources */,
 				A060869922E1B81B00CA8C4F /* ProfileHeaderView.swift in Sources */,
@@ -307,6 +327,7 @@
 				A07E3D7822E5F0A20022426F /* DownloadingFile.swift in Sources */,
 				A0F3640A22E729C90079730C /* BasePhotoViewController.swift in Sources */,
 				A07E3D7C22E5FB260022426F /* PhotoCollectionViewCell.swift in Sources */,
+				A0CBF7F822EAEAE900FD730F /* ScrollViewExtension.swift in Sources */,
 				A060868D22E0BEFE00CA8C4F /* NotificationCenter.swift in Sources */,
 				A0B5715222DCB7EF007CDCE1 /* AppDelegate.swift in Sources */,
 			);
@@ -454,6 +475,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 58DB3XB8W9;
 				INFOPLIST_FILE = flickerSwift/Info.plist;
@@ -464,6 +486,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = FLS.flickerSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "flickerSwift/Controllers&Storyboards/flickerSwift-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -473,6 +497,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 58DB3XB8W9;
 				INFOPLIST_FILE = flickerSwift/Info.plist;
@@ -483,6 +508,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = FLS.flickerSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "flickerSwift/Controllers&Storyboards/flickerSwift-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

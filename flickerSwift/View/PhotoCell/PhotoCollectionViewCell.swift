@@ -8,12 +8,13 @@
 
 import UIKit
 
-class PhotoCollectionViewCell: UICollectionViewCell {
+class PhotoCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
     static let Identifier = "PhotoCell"
     
     @IBOutlet var cell: PhotoCollectionViewCell!
     
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var scrollView: UIScrollView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -39,6 +40,8 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint(item: cell!, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: 0).isActive = true
         NSLayoutConstraint(item: cell!, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0).isActive = true
         NSLayoutConstraint(item: cell!, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: 0).isActive = true
+        
+        scrollView.delegate = self
     }
     
     func setSize(_ size: CGSize) {
@@ -58,5 +61,18 @@ class PhotoCollectionViewCell: UICollectionViewCell {
                 print("Error loading image : \(error)")
             }
         }
+    }
+    
+    func enableZoom(zoomScale: CGFloat) {
+        scrollView.maximumZoomScale = zoomScale
+        scrollView.minimumZoomScale = 1
+    }
+    
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return imageView
+    }
+    
+    func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        print("debug log")
     }
 }

@@ -9,6 +9,22 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="vJB-f6-e8O">
+            <objects>
+                <navigationController id="KWx-A8-ZVA" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Iiq-9V-hRu">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="N2h-3U-0tk" kind="relationship" relationship="rootViewController" id="NLn-wv-7VV"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fKr-cx-Drw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1570" y="86"/>
+        </scene>
         <!--ProfileViewController-->
         <scene sceneID="FPi-aV-QHD">
             <objects>
@@ -17,8 +33,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="31d-so-6fv">
+                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                            </activityIndicatorView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="X6c-0m-2a8">
-                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Chf-xO-hUP">
                                     <size key="itemSize" width="110" height="110"/>
@@ -49,19 +68,25 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="X6c-0m-2a8" firstAttribute="top" secondItem="QdU-eo-SdK" secondAttribute="top" id="9Fx-Zb-uhW"/>
+                            <constraint firstItem="31d-so-6fv" firstAttribute="leading" secondItem="QdU-eo-SdK" secondAttribute="leading" id="EMf-of-nrJ"/>
                             <constraint firstItem="X6c-0m-2a8" firstAttribute="trailing" secondItem="QdU-eo-SdK" secondAttribute="trailing" id="PMe-Zl-BVD"/>
                             <constraint firstItem="QdU-eo-SdK" firstAttribute="bottom" secondItem="X6c-0m-2a8" secondAttribute="bottom" id="h5K-gQ-m8P"/>
                             <constraint firstItem="X6c-0m-2a8" firstAttribute="leading" secondItem="QdU-eo-SdK" secondAttribute="leading" id="iCn-Yl-PNh"/>
+                            <constraint firstItem="31d-so-6fv" firstAttribute="top" secondItem="QdU-eo-SdK" secondAttribute="top" id="ntg-rt-6YP"/>
+                            <constraint firstItem="QdU-eo-SdK" firstAttribute="trailing" secondItem="31d-so-6fv" secondAttribute="trailing" id="r3G-Dd-diI"/>
+                            <constraint firstItem="QdU-eo-SdK" firstAttribute="bottom" secondItem="31d-so-6fv" secondAttribute="bottom" id="z0X-ja-8Oa"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="QdU-eo-SdK"/>
                     </view>
+                    <navigationItem key="navigationItem" id="7Oz-Aw-eyI"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="31d-so-6fv" id="faZ-8q-shT"/>
                         <outlet property="photosCollectionView" destination="X6c-0m-2a8" id="UZe-Am-XgB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W1B-QV-Qms" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="27.536231884057973" y="158.70535714285714"/>
+            <point key="canvasLocation" x="-712" y="86"/>
         </scene>
     </scenes>
 </document>

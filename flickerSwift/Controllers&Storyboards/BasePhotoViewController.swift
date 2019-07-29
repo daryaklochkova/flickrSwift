@@ -13,6 +13,7 @@ let identifier = "PhotoCell"
 class BasePhotoViewController: UIViewController, UICollectionViewDataSource {
     var photos: [Photo]?
     
+    //MARK: UICollectionViewDataSource implementation
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return photos?.count ?? 0
     }
@@ -29,15 +30,13 @@ class BasePhotoViewController: UIViewController, UICollectionViewDataSource {
         return cell
     }
     
-    
+    //MARK: Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         NotificationCenter.default.addObserver(self, selector: #selector(photoUpdated(notification:)), name: .photoUpdated, object: nil)
     }
     
-    @objc func photoUpdated(notification: Notification) {
-     
-    }
+    @objc func photoUpdated(notification: Notification) { }
     
 }
