@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A010545B22EEE7EE004E3AF8 /* ActivityViewFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A010545922EEE7EE004E3AF8 /* ActivityViewFooter.swift */; };
+		A010545C22EEE7EE004E3AF8 /* ActivityViewFooter.xib in Resources */ = {isa = PBXBuildFile; fileRef = A010545A22EEE7EE004E3AF8 /* ActivityViewFooter.xib */; };
+		A010545F22EEF230004E3AF8 /* UICollectionPhotoViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A010545E22EEF230004E3AF8 /* UICollectionPhotoViewer.swift */; };
 		A043032E22E04E4900D2411E /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = A043032D22E04E4900D2411E /* User.swift */; };
 		A060868722E099F500CA8C4F /* DataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A060868622E099F500CA8C4F /* DataProvider.swift */; };
 		A060868922E09E2E00CA8C4F /* Icon.swift in Sources */ = {isa = PBXBuildFile; fileRef = A060868822E09E2E00CA8C4F /* Icon.swift */; };
@@ -36,6 +39,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A010545922EEE7EE004E3AF8 /* ActivityViewFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViewFooter.swift; sourceTree = "<group>"; };
+		A010545A22EEE7EE004E3AF8 /* ActivityViewFooter.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ActivityViewFooter.xib; sourceTree = "<group>"; };
+		A010545E22EEF230004E3AF8 /* UICollectionPhotoViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionPhotoViewer.swift; sourceTree = "<group>"; };
 		A043032D22E04E4900D2411E /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		A060868622E099F500CA8C4F /* DataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProvider.swift; sourceTree = "<group>"; };
 		A060868822E09E2E00CA8C4F /* Icon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icon.swift; sourceTree = "<group>"; };
@@ -79,6 +85,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A010545D22EEE7F5004E3AF8 /* ActivityIndicatorFooter */ = {
+			isa = PBXGroup;
+			children = (
+				A010545922EEE7EE004E3AF8 /* ActivityViewFooter.swift */,
+				A010545A22EEE7EE004E3AF8 /* ActivityViewFooter.xib */,
+			);
+			path = ActivityIndicatorFooter;
+			sourceTree = "<group>";
+		};
 		A043032C22E04E1000D2411E /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -196,6 +211,7 @@
 			children = (
 				A07E3D7922E5FAFC0022426F /* PhotoCell */,
 				A0B5716D22DCCFD5007CDCE1 /* UserCellView */,
+				A010545D22EEE7F5004E3AF8 /* ActivityIndicatorFooter */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -231,6 +247,7 @@
 			children = (
 				A0F3640022E717C30079730C /* PhotoViewerViewController.swift */,
 				A0F3640222E717D70079730C /* PhotoViewer.storyboard */,
+				A010545E22EEF230004E3AF8 /* UICollectionPhotoViewer.swift */,
 			);
 			path = PhotoViewer;
 			sourceTree = "<group>";
@@ -296,6 +313,7 @@
 			files = (
 				A0B5716922DCCDA4007CDCE1 /* UserCell.xib in Resources */,
 				A0F3640322E717D70079730C /* PhotoViewer.storyboard in Resources */,
+				A010545C22EEE7EE004E3AF8 /* ActivityViewFooter.xib in Resources */,
 				A0B5715C22DCB7F1007CDCE1 /* LaunchScreen.storyboard in Resources */,
 				A060869622E1B54E00CA8C4F /* Profile.storyboard in Resources */,
 				A0B5715922DCB7F1007CDCE1 /* Assets.xcassets in Resources */,
@@ -318,6 +336,7 @@
 				A0B5716422DCB953007CDCE1 /* NetworkManager.swift in Sources */,
 				A060869422E1B54000CA8C4F /* ProfileViewController.swift in Sources */,
 				A0B5715422DCB7EF007CDCE1 /* ViewController.swift in Sources */,
+				A010545F22EEF230004E3AF8 /* UICollectionPhotoViewer.swift in Sources */,
 				A043032E22E04E4900D2411E /* User.swift in Sources */,
 				A0CBF83922EB3AE300FD730F /* CellSizeProvider.m in Sources */,
 				A060868722E099F500CA8C4F /* DataProvider.swift in Sources */,
@@ -327,6 +346,7 @@
 				A07E3D7822E5F0A20022426F /* DownloadingFile.swift in Sources */,
 				A0F3640A22E729C90079730C /* BasePhotoViewController.swift in Sources */,
 				A07E3D7C22E5FB260022426F /* PhotoCollectionViewCell.swift in Sources */,
+				A010545B22EEE7EE004E3AF8 /* ActivityViewFooter.swift in Sources */,
 				A0CBF7F822EAEAE900FD730F /* ScrollViewExtension.swift in Sources */,
 				A060868D22E0BEFE00CA8C4F /* NotificationCenter.swift in Sources */,
 				A0B5715222DCB7EF007CDCE1 /* AppDelegate.swift in Sources */,

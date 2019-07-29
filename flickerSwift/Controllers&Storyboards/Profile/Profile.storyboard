@@ -42,7 +42,7 @@
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Chf-xO-hUP">
                                     <size key="itemSize" width="110" height="110"/>
                                     <size key="headerReferenceSize" width="50" height="199"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="50" height="50"/>
                                     <inset key="sectionInset" minX="10" minY="10" maxX="10" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
@@ -57,6 +57,10 @@
                                 </cells>
                                 <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="ProfileHeader" id="LsY-8Q-iRx" customClass="ProfileHeaderView" customModule="flickerSwift" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="199"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </collectionReusableView>
+                                <collectionReusableView key="sectionFooterView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="ActivityViewFooter" id="oG7-zC-X7q" customClass="ActivityViewFooter" customModule="flickerSwift" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="319" width="414" height="50"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </collectionReusableView>
                                 <connections>
@@ -80,7 +84,6 @@
                     </view>
                     <navigationItem key="navigationItem" id="7Oz-Aw-eyI"/>
                     <connections>
-                        <outlet property="activityIndicator" destination="31d-so-6fv" id="faZ-8q-shT"/>
                         <outlet property="photosCollectionView" destination="X6c-0m-2a8" id="UZe-Am-XgB"/>
                     </connections>
                 </viewController>

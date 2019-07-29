@@ -11,9 +11,9 @@ import UIKit
 class ProfileViewController: BasePhotoViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     @IBOutlet weak var photosCollectionView: UICollectionView!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     weak var header: ProfileHeaderView?
+    weak var footer: ActivityViewFooter?
     
     var user: User?
     
@@ -29,15 +29,17 @@ class ProfileViewController: BasePhotoViewController, UICollectionViewDelegate, 
         let layout = photosCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
         cellSizeProvider = CellSizeProvider.init(minCellSize: layout.itemSize, minSpacing: Int(layout.minimumLineSpacing))
         
-        NotificationCenter.default.addObserver(self, selector: #selector(photoUpdated(notification:)), name: .photoUpdated, object: nil)
+        subscribeToNotifications()
     }
-    
-    
+
     override func viewDidLayoutSubviews() {
-        
         cellSizeProvider?.recalculateCellSize(photosCollectionView.frame.size)
         super.viewDidLayoutSubviews()
+    }
+    
+    private func resizeHeaderAndFooter() {
         header?.setWidth(photosCollectionView.frame.width)
+        footer?.setWidth(photosCollectionView.frame.width)
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -52,7 +54,17 @@ class ProfileViewController: BasePhotoViewController, UICollectionViewDelegate, 
     }
     
     //MARK: Notifications handlers
+    fileprivate func subscribeToNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(photoUpdated(notification:)), name: .photoUpdated, object: nil)
+    }
+    
     @objc override func photoUpdated(notification: Notification) {
+        photos = user?.photos
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.footer?.isHidden = true
+        }
+        
         if let photo = notification.object as? Photo {
             if user != nil, user === photo.owner {
                 DispatchQueue.main.async { [weak self] in
@@ -84,6 +96,13 @@ class ProfileViewController: BasePhotoViewController, UICollectionViewDelegate, 
             header = headerView
             return headerView
             
+        case UICollectionView.elementKindSectionFooter:
+            guard let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "ActivityViewFooter", for: indexPath) as? ActivityViewFooter else {
+                fatalError("Invalid view type")
+            }
+            footerView.setSize(footerView.frame.size)
+            footer = footerView
+            return footerView
         default:
             assert(false, "Invalid element type")
         }
