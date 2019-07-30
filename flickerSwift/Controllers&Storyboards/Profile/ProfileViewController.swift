@@ -100,6 +100,7 @@ class ProfileViewController: BasePhotoViewController, UICollectionViewDelegate, 
             guard let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "ActivityViewFooter", for: indexPath) as? ActivityViewFooter else {
                 fatalError("Invalid view type")
             }
+            
             footerView.setSize(footerView.frame.size)
             footer = footerView
             return footerView
@@ -113,7 +114,7 @@ class ProfileViewController: BasePhotoViewController, UICollectionViewDelegate, 
         let cell = super.collectionView(collectionView, cellForItemAt: indexPath)
         
         if let cell = cell as? PhotoCollectionViewCell {
-            cell.imageView.contentMode = .scaleAspectFill
+            cell.imageView?.contentMode = .scaleAspectFit
         }
         
         return cell
@@ -128,7 +129,6 @@ class ProfileViewController: BasePhotoViewController, UICollectionViewDelegate, 
             self.navigationController?.pushViewController(viewController, animated: true)
         }
     }
-    
     
     //MARK: UICollectionViewDelegateFlowLayout realization
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

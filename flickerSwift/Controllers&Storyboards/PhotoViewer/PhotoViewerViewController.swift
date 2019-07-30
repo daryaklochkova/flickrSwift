@@ -12,7 +12,7 @@ class PhotoViewerViewController: BasePhotoViewController, UICollectionViewDelega
     
     //MARK: Outlets
     @IBOutlet weak var smallCollectionView: UICollectionView!
-    @IBOutlet weak var bigCollectionView: UICollectionView!
+    @IBOutlet weak var bigCollectionView: UICollectionPhotoViewer!
     
     //MARK:
     var currentCellIndexPath: IndexPath!
@@ -79,7 +79,7 @@ class PhotoViewerViewController: BasePhotoViewController, UICollectionViewDelega
         bigCollectionView.reloadItems(at: [currentCellIndexPath])
     }
     
-
+    
     //MARK: UIcrollViewDelegate implementation
     func scrollToItem(at index: IndexPath, animated: Bool = false) {
         bigCollectionView.scrollToItem(at: index, at: .centeredHorizontally, animated: animated)
@@ -97,28 +97,14 @@ class PhotoViewerViewController: BasePhotoViewController, UICollectionViewDelega
         var targetOffset: CGPoint?
         
         if velocity.x == 0 {
-            let visibleCells = bigCollectionView.visibleCells
-            
-            for cell in visibleCells {
-                var visibleArea: CGFloat
-                if cell.frame.origin.x < scrollView.contentOffset.x {
-                    visibleArea = cell.frame.origin.x + cell.frame.width - scrollView.contentOffset.x
-                } else {
-                    visibleArea = scrollView.contentOffset.x + cell.frame.width - cell.frame.origin.x
-                }
-                
-                if visibleArea > (cell.frame.width / 2) {
-                    targetOffset = cell.frame.origin
-                    
-                    if let indexPath = bigCollectionView.indexPath(for: cell) {
-                        currentCellIndexPath = indexPath
-                    }
-                }
+            let cell = bigCollectionView.getPrimaryVisibleCell()
+            targetOffset = cell.frame.origin
+            if let indexPath = bigCollectionView.indexPath(for: cell) {
+                currentCellIndexPath = indexPath
             }
-            
         } else {
             var row = currentCellIndexPath.row
-        
+            
             if velocity.x > 0 {
                 row += 1
             } else {
@@ -149,17 +135,27 @@ class PhotoViewerViewController: BasePhotoViewController, UICollectionViewDelega
         scrollToItem(at: indexPath)
     }
     
+    
     override func collectionView(_ collectionView: UICollectionView,
                                  cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = super.collectionView(collectionView, cellForItemAt: indexPath)
         
-        if let cell = cell as? PhotoCollectionViewCell, collectionView === bigCollectionView {
-            cell.enableZoom(zoomScale: 3)
+        if collectionView === bigCollectionView {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath)
+            
+            if let cell = cell as? PhotoCollectionViewCell {
+                
+                if let photo = photos?[indexPath[1]] {
+                    cell.configureWith(photo: photo, and: collectionView.frame.size)
+                }
+                
+                cell.enableZoom(zoomScale: 3)
+                //cell.scrollView.delegate = self
+                return cell
+            }
         }
-        
-        return cell
+        return super.collectionView(collectionView, cellForItemAt: indexPath)
     }
-    
+ 
 }
 
 extension PhotoViewerViewController: UICollectionViewDelegateFlowLayout {
