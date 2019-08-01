@@ -12,16 +12,18 @@ class ActivityViewFooter: UICollectionReusableView {
 
     @IBOutlet var cell: UICollectionReusableView!
     
+    @IBOutlet weak var noPhotosLable: UILabel!
+    
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
     }
-    
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -43,5 +45,16 @@ class ActivityViewFooter: UICollectionReusableView {
         cell.frame = frame
     }
     
+    func startActivityIndicator() {
+        activityIndicator.startAnimating()
+    }
     
+    func stopActivityIndicator() {
+        activityIndicator.stopAnimating()
+    }
+    
+    func showNoPhotosLable() {
+        stopActivityIndicator()
+        noPhotosLable.isHidden = false
+    }
 }

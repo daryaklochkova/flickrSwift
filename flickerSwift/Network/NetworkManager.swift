@@ -85,10 +85,11 @@ final class NetworkManager {
         task.resume()
     }
     
-    func downloadDataBy(url: URL, completionHandler: @escaping (URL) -> Void ) {
+    func downloadDataBy(url: URL, completionHandler: @escaping (URL) -> Void, failHandler: @escaping (Error) -> Void ) {
         let task = URLSession.shared.downloadTask(with: url) { (tmpUrl, urlResponce, error) in
             guard error == nil else {
                 print("Error! \(error.debugDescription)")
+                failHandler(error!)
                 return
             }
             

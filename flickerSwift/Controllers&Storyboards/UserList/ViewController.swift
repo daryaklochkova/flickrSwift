@@ -156,6 +156,7 @@ class ViewController: UIViewController, UITableViewDataSource, UISearchResultsUp
         searchController.searchBar.placeholder = "Search people"
         navigationItem.searchController = searchController
         definesPresentationContext = true
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
     
     fileprivate func reloadUsersTableView() {

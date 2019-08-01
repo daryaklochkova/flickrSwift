@@ -17,6 +17,7 @@ class PhotoCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
     var imageView: UIImageView?
     @IBOutlet weak var scrollView: UIScrollView!
     
+    //MARK: Initialization
     override func awakeFromNib() {
         super.awakeFromNib()
     }
@@ -42,20 +43,23 @@ class PhotoCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
         NSLayoutConstraint(item: cell!, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: 0).isActive = true
         
         scrollView.delegate = self
+        
+        if let image = UIImage(named: "NoPhoto") {
+            createImageViewWith(image: image)
+        }
+    }
+    
+    //MARK: Cell reusing
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        if let image = UIImage(named: "NoPhoto") {
+            createImageViewWith(image: image)
+        }
     }
     
     func setSize(_ size: CGSize) {
         cell.frame.size = size
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        imageView?.removeFromSuperview()
-        imageView = UIImageView(image: UIImage(named: "NoPhoto"))
-        calculateMinScale()
-        scrollView.zoomScale = scrollView.minimumZoomScale
-        moveToCenterImageFrame()
-        scrollView.addSubview(imageView!)
     }
     
     func configureWith(photo: Photo, and size: CGSize) {
@@ -64,22 +68,16 @@ class PhotoCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
         if let localUrl = photo.localURL {
             do {
                 let imageData = try Data(contentsOf: localUrl)
-                imageView?.removeFromSuperview()
-                imageView = UIImageView(image: UIImage(data: imageData))
-                scrollView.addSubview(imageView!)
+                if let image = UIImage(data: imageData) {
+                    createImageViewWith(image: image)
+                }
             } catch {
                 print("Error loading image : \(error)")
             }
         }
     }
     
-    //MARK: DEBUG FUNCTION
-    func configureWith(image: UIImage) {
-        imageView?.removeFromSuperview()
-        imageView = UIImageView(image: image)
-        scrollView.addSubview(imageView!)
-    }
-    
+
     func scaleToFill() {
         guard let imageSize = imageView?.image?.size else {
             return
@@ -115,11 +113,9 @@ class PhotoCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
             return
         }
         
-        // center the zoom view as it becomes smaller than the size of the screen
         let boundsSize = bounds.size
         var frameToCenter = imageView.frame
         
-        // center horizontally
         if frameToCenter.size.width < boundsSize.width {
             frameToCenter.origin.x = (boundsSize.width - frameToCenter.size.width) / 2
         }
@@ -127,7 +123,6 @@ class PhotoCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
             frameToCenter.origin.x = 0
         }
         
-        // center vertically
         if frameToCenter.size.height < boundsSize.height {
             frameToCenter.origin.y = (boundsSize.height - frameToCenter.size.height)/2
         }
@@ -155,17 +150,6 @@ class PhotoCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
         scrollView.minimumZoomScale = min(xScale, yScale) - 0.001
     }
     
-    func setPhoto(photo: Photo) {
-        if let iconLocalUrl = photo.localURL {
-            do {
-                let imageData = try Data(contentsOf: iconLocalUrl)
-                imageView?.image = UIImage(data: imageData)
-            } catch {
-                print("Error loading image : \(error)")
-            }
-        }
-    }
-    
     func enableZoom(zoomScale: CGFloat) {
         scrollView.maximumZoomScale = zoomScale
         cell.isUserInteractionEnabled = true
@@ -174,6 +158,7 @@ class PhotoCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
         moveToCenterImageFrame()
     }
     
+    //MARK: UIScrollViewDelegate
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView
     }
@@ -183,6 +168,7 @@ class PhotoCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
     }
     
     
+    //MARK: User actions
     @IBAction func doubleTap(_ sender: UITapGestureRecognizer) {
         if scrollView.zoomScale < scrollView.maximumZoomScale {
             let touchPoint = sender.location(in: scrollView)
@@ -191,5 +177,15 @@ class PhotoCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
             scrollView.setZoomScale(scrollView.minimumZoomScale, animated: true)
             moveToCenterImageFrame()
         }
+    }
+    
+    //MARK: private function
+    fileprivate func createImageViewWith(image: UIImage) {
+        imageView?.removeFromSuperview()
+        imageView = UIImageView(image: image)
+        calculateMinScale()
+        scrollView.zoomScale = scrollView.minimumZoomScale
+        moveToCenterImageFrame()
+        scrollView.addSubview(imageView!)
     }
 }

@@ -12,4 +12,6 @@ extension Notification.Name {
     static let photoUpdated = Notification.Name("photoUpdated")
     static let userUpdated = NSNotification.Name("userUpdated")
     static let iconUpdated = NSNotification.Name("iconUpdated")
+    
+    static let fileDownloadFailed = NSNotification.Name("fileDownloadFailed")
 }

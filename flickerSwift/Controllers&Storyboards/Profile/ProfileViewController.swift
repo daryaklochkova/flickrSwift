@@ -99,6 +99,13 @@ class ProfileViewController: BasePhotoViewController, UICollectionViewDelegate, 
             
             footerView.setSize(footerView.frame.size)
             footer = footerView
+            
+            if let photoCount = photos?.count, photoCount > 0 {
+                footerView.startActivityIndicator()
+            } else {
+                footerView.showNoPhotosLable()
+            }
+ 
             returnElement = footerView
         default:
             assert(false, "Invalid element type")

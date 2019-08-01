@@ -14,7 +14,8 @@ class DataProvider {
     private init() {}
     
     func getUserBy(name: String, completionHandler: @escaping (User) -> Void) {
-        NetworkManager.instance.fetchFindByUsernameRequest(username: name) { (dataDictionary) in
+        NetworkManager.instance.fetchFindByUsernameRequest(username: name) {
+            (dataDictionary) in
             guard let userInfo = dataDictionary["user"] as? NSDictionary,
                 let userID = (userInfo["id"] as? String) else {
                     return
@@ -31,7 +32,7 @@ class DataProvider {
     
     func getFile(file: DownloadingFile, completionHandler: @escaping () -> ()) {
         if let remoteUrl = file.remoteURL, let localURL = file.localURL {
-            NetworkManager.instance.downloadDataBy(url: remoteUrl) { (url) in
+            NetworkManager.instance.downloadDataBy(url: remoteUrl, completionHandler: { (url) in
                 do {
                     try FileManager.default.removeItem(at: localURL)
                 } catch {
@@ -45,7 +46,12 @@ class DataProvider {
                     print(error)
                     return
                 }
-            }
+
+            }, failHandler: { (error) in
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: .fileDownloadFailed, object: file)
+                }
+            })
         }
     }
     

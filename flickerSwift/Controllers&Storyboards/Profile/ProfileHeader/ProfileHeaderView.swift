@@ -48,7 +48,7 @@ class ProfileHeaderView: UICollectionReusableView {
     }
     
     func setInfo(user: User) {
-        userName.text = user.username
+        userName.text = user.realName ?? user.username
         followersCount.text = "\(user.follower ?? "0") Followers - \(user.following ?? "0") Following"
         
         if let iconLocalUrl = user.icon?.localURL {

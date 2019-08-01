@@ -79,7 +79,12 @@ class User {
             let content = username["_content"] as? String {
             self.username = content
         }
-        realName = userInfo["realname"] as? String
+        
+        if let realName = userInfo["realname"] as? NSDictionary,
+            let content = realName["_content"] as? String, content != "" {
+            self.realName = content
+        }
+        
         
         icon = Icon(dictionary: userInfo, owner: self)
         getPhotosFromDataProvider()
@@ -91,20 +96,22 @@ class User {
         NotificationCenter.default.removeObserver(self)
     }
     
+    fileprivate func parseReceivedPhotosInfo(_ receivedPhotos: NSArray) {
+        for photo in receivedPhotos {
+            if  let photoDictionary = photo as? NSDictionary,
+                let photo = Photo(dictionary: photoDictionary, owner: self) {
+                self.addPhoto(photo)
+            }
+        }
+    }
+    
     func getPhotosFromDataProvider() {
         DataProvider.instance.getPhotosInfoForUser(user: self) {
             [weak self] (dictionary) in
    
             if let photosInfo = dictionary["photos"] as? NSDictionary,
                 let receivedPhotos = photosInfo["photo"] as? NSArray {
-                for photo in receivedPhotos {
-                    if let strongSelf = self,
-                        let photoDictionary = photo as? NSDictionary,
-                        let photo = Photo(dictionary: photoDictionary, owner: strongSelf) {
-                        
-                        self?.addPhoto(photo)
-                    }
-                }
+                self?.parseReceivedPhotosInfo(receivedPhotos)
             }
         }
     }
