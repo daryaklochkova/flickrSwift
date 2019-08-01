@@ -11,9 +11,9 @@ import Foundation
 
 
 class Icon: DownloadingFile {
-    var nsid: String
-    var iconserver: String
-    var iconfarm: Int
+    let nsid: String
+    let iconserver: String
+    let iconfarm: Int
     
     unowned var owner: User
     
@@ -41,10 +41,22 @@ class Icon: DownloadingFile {
         self.iconfarm = iconfarm
         self.nsid = nsid
         
+       getIconFromDataProvider()
+    }
+    
+    func getIconFromDataProvider() {
         DispatchQueue.global().async {
             DataProvider.instance.getFile(file: self, completionHandler: {
-                NotificationCenter.default.post(name: .iconUpdated, object: self)
-            })   
+                [weak self] in
+                self?.postIconUpdatedNotification()
+            })
+        }
+    }
+    
+    func postIconUpdatedNotification() {
+        DispatchQueue.main.async {
+            [weak self] in
+            NotificationCenter.default.post(name: .iconUpdated, object: self)
         }
     }
 }

@@ -19,7 +19,6 @@ class PhotoCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
     
     override init(frame: CGRect) {
@@ -52,7 +51,11 @@ class PhotoCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
     override func prepareForReuse() {
         super.prepareForReuse()
         imageView?.removeFromSuperview()
-        imageView = nil
+        imageView = UIImageView(image: UIImage(named: "NoPhoto"))
+        calculateMinScale()
+        scrollView.zoomScale = scrollView.minimumZoomScale
+        moveToCenterImageFrame()
+        scrollView.addSubview(imageView!)
     }
     
     func configureWith(photo: Photo, and size: CGSize) {
@@ -61,10 +64,8 @@ class PhotoCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
         if let localUrl = photo.localURL {
             do {
                 let imageData = try Data(contentsOf: localUrl)
+                imageView?.removeFromSuperview()
                 imageView = UIImageView(image: UIImage(data: imageData))
-                calculateMinScale()
-                scrollView.zoomScale = scrollView.minimumZoomScale
-                centerImage()
                 scrollView.addSubview(imageView!)
             } catch {
                 print("Error loading image : \(error)")
@@ -72,15 +73,55 @@ class PhotoCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
         }
     }
     
-    func centerImage() {
+    //MARK: DEBUG FUNCTION
+    func configureWith(image: UIImage) {
+        imageView?.removeFromSuperview()
+        imageView = UIImageView(image: image)
+        scrollView.addSubview(imageView!)
+    }
+    
+    func scaleToFill() {
+        guard let imageSize = imageView?.image?.size else {
+            return
+        }
+        let boundsSize = cell.frame.size
+        
+        let yScale = boundsSize.height / imageSize.height
+        let xScale = boundsSize.width / imageSize.width
+     
+        scrollView.minimumZoomScale = max(xScale, yScale)
+        scrollView.zoomScale = scrollView.minimumZoomScale
+        
+        scrollImageToCenter()
+    }
+    
+    func scrollImageToCenter() {
+        guard let imageView = imageView else {
+            return
+        }
+        
+        let boundsSize = bounds.size
+        let frameToCenter = imageView.frame
+        let x = (frameToCenter.size.width - boundsSize.width) / 2
+        let y = (frameToCenter.size.height - boundsSize.height) / 2
+        
+        print(x, y)
+        scrollView.contentOffset = CGPoint(x: x, y: y)
+    }
+    
+    func moveToCenterImageFrame() {
+        
+        guard let imageView = imageView else {
+            return
+        }
         
         // center the zoom view as it becomes smaller than the size of the screen
-        let boundsSize = self.bounds.size
-        var frameToCenter = imageView?.frame ?? CGRect.zero
+        let boundsSize = bounds.size
+        var frameToCenter = imageView.frame
         
         // center horizontally
         if frameToCenter.size.width < boundsSize.width {
-            frameToCenter.origin.x = (boundsSize.width - frameToCenter.size.width)/2
+            frameToCenter.origin.x = (boundsSize.width - frameToCenter.size.width) / 2
         }
         else {
             frameToCenter.origin.x = 0
@@ -94,12 +135,12 @@ class PhotoCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
             frameToCenter.origin.y = 0
         }
         
-        imageView?.frame = frameToCenter
+        imageView.frame = frameToCenter
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        centerImage()
+        moveToCenterImageFrame()
     }
     
     func calculateMinScale() {
@@ -128,6 +169,9 @@ class PhotoCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
     func enableZoom(zoomScale: CGFloat) {
         scrollView.maximumZoomScale = zoomScale
         cell.isUserInteractionEnabled = true
+        calculateMinScale()
+        scrollView.zoomScale = scrollView.minimumZoomScale
+        moveToCenterImageFrame()
     }
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
@@ -135,6 +179,17 @@ class PhotoCollectionViewCell: UICollectionViewCell, UIScrollViewDelegate {
     }
     
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        centerImage()
+        moveToCenterImageFrame()
+    }
+    
+    
+    @IBAction func doubleTap(_ sender: UITapGestureRecognizer) {
+        if scrollView.zoomScale < scrollView.maximumZoomScale {
+            let touchPoint = sender.location(in: scrollView)
+            scrollView.zoomTo(point: touchPoint, scale: scrollView.maximumZoomScale, animated: true)
+        } else {
+            scrollView.setZoomScale(scrollView.minimumZoomScale, animated: true)
+            moveToCenterImageFrame()
+        }
     }
 }

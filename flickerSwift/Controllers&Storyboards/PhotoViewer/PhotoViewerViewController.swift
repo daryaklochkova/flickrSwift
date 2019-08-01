@@ -15,25 +15,25 @@ class PhotoViewerViewController: BasePhotoViewController, UICollectionViewDelega
     @IBOutlet weak var bigCollectionView: UICollectionPhotoViewer!
     
     //MARK:
-    var currentCellIndexPath: IndexPath!
+    var currentCellIndexPath = IndexPath(row: 0, section: 0)
     
     
     //MARK: Life cycle functions
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        if currentCellIndexPath == nil {
-            currentCellIndexPath = IndexPath(row: 0, section: 0)
-        }
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(orientationChanged(notification:)), name: UIDevice.orientationDidChangeNotification, object: nil)
+        subscribeToNotifications()
     }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
-        scrollToItem(at: currentCellIndexPath)
+        scrollToItemInBothCollection(at: currentCellIndexPath)
         bigCollectionView.reloadItems(at: [currentCellIndexPath])
+    }
+    
+    fileprivate func subscribeToNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(orientationChanged(notification:)), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
     
     //MARK: User actions handlers
@@ -67,25 +67,23 @@ class PhotoViewerViewController: BasePhotoViewController, UICollectionViewDelega
         
         return transition
     }
-    
-    
+
     @objc func orientationChanged(notification:Notification) {
-        bigCollectionView.collectionViewLayout.invalidateLayout()
-        smallCollectionView.collectionViewLayout.invalidateLayout()
-        
-        bigCollectionView.scrollToItem(at: currentCellIndexPath, at: .centeredHorizontally, animated: false)
-        smallCollectionView.scrollToItem(at: currentCellIndexPath, at: .centeredHorizontally, animated: false)
-        
+        invalidateLayoutForBothCollectionViews()
+        scrollToItemInBothCollection(at: currentCellIndexPath, animated: false)
         bigCollectionView.reloadItems(at: [currentCellIndexPath])
     }
-    
-    
+
     //MARK: UIcrollViewDelegate implementation
-    func scrollToItem(at index: IndexPath, animated: Bool = false) {
+    func scrollToItemInBothCollection(at index: IndexPath, animated: Bool = false) {
         bigCollectionView.scrollToItem(at: index, at: .centeredHorizontally, animated: animated)
         smallCollectionView.scrollToItem(at: index, at: .centeredHorizontally, animated: animated)
     }
     
+    func invalidateLayoutForBothCollectionViews() {
+        bigCollectionView.collectionViewLayout.invalidateLayout()
+        smallCollectionView.collectionViewLayout.invalidateLayout()
+    }
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         
@@ -132,10 +130,9 @@ class PhotoViewerViewController: BasePhotoViewController, UICollectionViewDelega
             return
         }
         currentCellIndexPath = indexPath
-        scrollToItem(at: indexPath)
+        scrollToItemInBothCollection(at: indexPath)
     }
-    
-    
+
     override func collectionView(_ collectionView: UICollectionView,
                                  cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
@@ -149,13 +146,20 @@ class PhotoViewerViewController: BasePhotoViewController, UICollectionViewDelega
                 }
                 
                 cell.enableZoom(zoomScale: 3)
-                //cell.scrollView.delegate = self
                 return cell
             }
         }
-        return super.collectionView(collectionView, cellForItemAt: indexPath)
+        
+        
+        let cell = super.collectionView(collectionView, cellForItemAt: indexPath)
+        
+        if let cell = cell as? PhotoCollectionViewCell {
+            cell.scaleToFill()
+        }
+        
+        return cell
+        
     }
- 
 }
 
 extension PhotoViewerViewController: UICollectionViewDelegateFlowLayout {

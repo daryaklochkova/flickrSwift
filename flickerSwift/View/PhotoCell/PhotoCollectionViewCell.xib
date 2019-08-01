@@ -16,15 +16,19 @@
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" reuseIdentifier="PhotoCell" id="gTV-IL-0wX">
+        <collectionViewCell opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" reuseIdentifier="PhotoCell" id="gTV-IL-0wX">
             <rect key="frame" x="0.0" y="0.0" width="227" height="227"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                 <rect key="frame" x="0.0" y="0.0" width="227" height="227"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="vXA-l3-bGL">
+                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="vXA-l3-bGL">
                         <rect key="frame" x="0.0" y="0.0" width="227" height="227"/>
+                        <gestureRecognizers/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="I1v-8m-TxM" appends="YES" id="FLY-Sc-n6l"/>
+                        </connections>
                     </scrollView>
                 </subviews>
             </view>
@@ -38,5 +42,10 @@
             <size key="customSize" width="227" height="227"/>
             <point key="canvasLocation" x="74.637681159420296" y="119.53125"/>
         </collectionViewCell>
+        <tapGestureRecognizer numberOfTapsRequired="2" id="I1v-8m-TxM">
+            <connections>
+                <action selector="doubleTap:" destination="-1" id="Rmc-ha-Zxd"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
 </document>

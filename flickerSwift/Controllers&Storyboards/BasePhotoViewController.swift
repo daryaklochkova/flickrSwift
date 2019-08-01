@@ -25,7 +25,6 @@ class BasePhotoViewController: UIViewController, UICollectionViewDataSource {
             let photo = photos?[indexPath[1]] {
             cell.configureWith(photo: photo, and: cell.frame.size)
         }
-        
         return cell
     }
     

@@ -10,10 +10,10 @@ import UIKit
 
 class Photo: DownloadingFile {
 
-    var id: String
-    var farmID: Int
-    var serverID: String
-    var secret: String
+    let id: String
+    let farmID: Int
+    let serverID: String
+    let secret: String
     
     unowned var owner: User
     
@@ -43,11 +43,22 @@ class Photo: DownloadingFile {
         self.serverID = serverID
         self.secret = secret
         
+        getPhotoFromDataProvider()
+    }
+    
+    func getPhotoFromDataProvider() {
         DispatchQueue.global().async {
             DataProvider.instance.getFile(file: self) {
-                NotificationCenter.default.post(name: .photoUpdated, object: self)
+                [weak self] in
+                self?.sendPhotoIdNotification()
             }
         }
     }
     
+    func sendPhotoIdNotification() {
+        DispatchQueue.main.async {
+            [weak self] in
+            NotificationCenter.default.post(name: .photoUpdated, object: self)
+        }
+    }
 }

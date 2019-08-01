@@ -15,49 +15,78 @@ class ViewController: UIViewController, UITableViewDataSource, UISearchResultsUp
     //MARK: Outlets
     @IBOutlet weak var usersTableView: UITableView!
     
-    var users = [User]()
+    //MARK: Users property
+    private let usersAccessQueue = DispatchQueue(label: "FlickrSwift.UsersQueue", qos: .background, attributes: .concurrent)
+    private var _users = [User]()
+    var users: [User] {
+        get {
+            var usersCopy: [User]!
+            usersAccessQueue.sync {
+                [weak self] in
+                guard let self = self else {
+                    return
+                }
+                usersCopy = self._users
+            }
+            
+            return usersCopy
+        }
+        
+        set {
+            usersAccessQueue.async(flags: .barrier) {
+                [weak self] in
+                guard let self = self else {
+                    return
+                }
+                
+                self._users = newValue
+            }
+        }
+    }
+    
+    func addUser(_ user: User) {
+        usersAccessQueue.async(flags: .barrier) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+            
+            self._users.append(user)
+        }
+    }
+    
     let searchController = UISearchController(searchResultsController: nil)
     
     //MARK: Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(userUpdated(notification:)), name: .userUpdated, object: nil)
-        
-        searchController.searchResultsUpdater = self
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search people"
-        navigationItem.searchController = searchController
-        definesPresentationContext = true
+        subscribeToNotifications()
+        configureteSearchController()
     }
     
     deinit {
          NotificationCenter.default.removeObserver(self)
     }
     
-    func usersListContain(username: String) -> Bool {
-        for user in users {
-            if let tmpUsername = user.username, tmpUsername.lowercased() == username.lowercased() {
-                return true
-            }
+    //MARK: Notifications handlers
+    fileprivate func subscribeToNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(userUpdated(notification:)), name: .userUpdated, object: nil)
+    }
+
+    @objc func userUpdated(notification: Notification) {
+        guard let object = notification.object as? User else {
+            return
         }
         
-        return false
-    }
-    
-    //MARK: Notifications handlers
-    @objc func userUpdated(notification: Notification) {
-        if let object = notification.object as? User {
-            for user in users {
-                if user === object {
-                    DispatchQueue.main.async { [weak self] in
-                        self?.usersTableView.reloadData()
-                    }
-                }
+        for user in users {
+            if user === object {
+                reloadUsersTableView()
             }
         }
     }
     
+    //MARK: UISearchResultsUpdating implementation
     func updateSearchResults(for searchController: UISearchController) {
         guard let username = searchController.searchBar.text, !username.isEmpty else {
             users = [User]()
@@ -69,12 +98,10 @@ class ViewController: UIViewController, UITableViewDataSource, UISearchResultsUp
             return
         }
         
-        DataProvider.instance.getUserBy(name: username, completionHandler: { [weak self] (user) in
-            self?.users.append(user)
-            
-            DispatchQueue.main.async {
-                self?.usersTableView.reloadData()
-            }
+        DataProvider.instance.getUserBy(name: username, completionHandler:
+            { [weak self] (user) in
+            self?.addUser(user)
+            self?.reloadUsersTableView()
         })
     }
     
@@ -87,7 +114,7 @@ class ViewController: UIViewController, UITableViewDataSource, UISearchResultsUp
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath) as! UserCellView
         
-        let user = users[users.count - indexPath[1] - 1]
+        let user = getUserAtIndexPath(indexPath: indexPath)
         if let username = user.username {
             cell.userName = username
         }
@@ -110,10 +137,42 @@ class ViewController: UIViewController, UITableViewDataSource, UISearchResultsUp
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let storyboard = UIStoryboard(name: "Profile", bundle: nil)
-        if let viewController = storyboard.instantiateInitialViewController() as? ProfileViewController {
-            viewController.user = users[users.count - indexPath[1] - 1]
-            self.navigationController?.pushViewController(viewController, animated: true)
+        let viewController = storyboard.instantiateInitialViewController()
+        if let viewController = viewController as? ProfileViewController {
+            viewController.user = getUserAtIndexPath(indexPath: indexPath)
+            navigationController?.pushViewController(viewController, animated: true)
         }
+    }
+    
+    
+    //MARK: private functions
+    fileprivate func getUserAtIndexPath(indexPath: IndexPath) -> User {
+        return users[users.count - indexPath[1] - 1]
+    }
+  
+    fileprivate func configureteSearchController() {
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search people"
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
+    }
+    
+    fileprivate func reloadUsersTableView() {
+        DispatchQueue.main.async { [weak self] in
+            self?.usersTableView.reloadData()
+        }
+    }
+    
+    fileprivate func usersListContain(username: String) -> Bool {
+        for user in users {
+            if let tmpUsername = user.username,
+                tmpUsername.lowercased() == username.lowercased() {
+                return true
+            }
+        }
+        
+        return false
     }
 }
 

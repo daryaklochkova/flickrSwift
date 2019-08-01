@@ -26,9 +26,7 @@ class ProfileViewController: BasePhotoViewController, UICollectionViewDelegate, 
     
         photos = user?.photos
         
-        let layout = photosCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
-        cellSizeProvider = CellSizeProvider.init(minCellSize: layout.itemSize, minSpacing: Int(layout.minimumLineSpacing))
-        
+        configurateCellSizeProvider()
         subscribeToNotifications()
     }
 
@@ -36,11 +34,7 @@ class ProfileViewController: BasePhotoViewController, UICollectionViewDelegate, 
         cellSizeProvider?.recalculateCellSize(photosCollectionView.frame.size)
         super.viewDidLayoutSubviews()
     }
-    
-    private func resizeHeaderAndFooter() {
-        header?.setWidth(photosCollectionView.frame.width)
-        footer?.setWidth(photosCollectionView.frame.width)
-    }
+
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
@@ -61,7 +55,8 @@ class ProfileViewController: BasePhotoViewController, UICollectionViewDelegate, 
     @objc override func photoUpdated(notification: Notification) {
         photos = user?.photos
         
-        DispatchQueue.main.async { [weak self] in
+        DispatchQueue.main.async {
+            [weak self] in
             self?.footer?.isHidden = true
         }
         
@@ -78,6 +73,7 @@ class ProfileViewController: BasePhotoViewController, UICollectionViewDelegate, 
     func collectionView(_ collectionView: UICollectionView,
                         viewForSupplementaryElementOfKind kind: String,
                         at indexPath: IndexPath) -> UICollectionReusableView {
+        var returnElement = UICollectionReusableView()
         switch kind {
         case UICollectionView.elementKindSectionHeader:
             guard
@@ -94,7 +90,7 @@ class ProfileViewController: BasePhotoViewController, UICollectionViewDelegate, 
                 headerView.setInfo(user: user)
             }
             header = headerView
-            return headerView
+            returnElement = headerView
             
         case UICollectionView.elementKindSectionFooter:
             guard let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "ActivityViewFooter", for: indexPath) as? ActivityViewFooter else {
@@ -103,10 +99,12 @@ class ProfileViewController: BasePhotoViewController, UICollectionViewDelegate, 
             
             footerView.setSize(footerView.frame.size)
             footer = footerView
-            return footerView
+            returnElement = footerView
         default:
             assert(false, "Invalid element type")
         }
+        
+        return returnElement
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -114,7 +112,7 @@ class ProfileViewController: BasePhotoViewController, UICollectionViewDelegate, 
         let cell = super.collectionView(collectionView, cellForItemAt: indexPath)
         
         if let cell = cell as? PhotoCollectionViewCell {
-            cell.imageView?.contentMode = .scaleAspectFit
+            cell.scaleToFill() 
         }
         
         return cell
@@ -137,5 +135,16 @@ class ProfileViewController: BasePhotoViewController, UICollectionViewDelegate, 
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return cellSizeProvider.getEdgeInsets();
+    }
+    
+    //MARK: private functions
+    fileprivate func configurateCellSizeProvider() {
+        let layout = photosCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
+        cellSizeProvider = CellSizeProvider.init(minCellSize: layout.itemSize, minSpacing: Int(layout.minimumLineSpacing))
+    }
+    
+    fileprivate func resizeHeaderAndFooter() {
+        header?.setWidth(photosCollectionView.frame.width)
+        footer?.setWidth(photosCollectionView.frame.width)
     }
 }

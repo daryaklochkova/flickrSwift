@@ -16,7 +16,41 @@ class User {
     var follower: String?
     
     var icon: Icon?
-    var photos: [Photo]?
+    
+    //MARK: Photos property
+    private var _photos: [Photo]?
+    private let photoAccessQueue = DispatchQueue(label: "FlickrSwift.photoAccessQueue", qos: .background, attributes: .concurrent)
+    
+    var photos: [Photo]? {
+        get {
+            var photosCopy: [Photo]?
+            photoAccessQueue.sync {
+                [unowned self] in
+                photosCopy = self._photos
+            }
+            
+            return photosCopy
+        }
+        
+        set {
+            photoAccessQueue.async(flags: .barrier) {
+                 [unowned self] in
+                self._photos = newValue
+            }
+        }
+    }
+    
+    func addPhoto(_ photo: Photo) {
+        photoAccessQueue.async(flags: .barrier) {
+            [unowned self] in
+            
+            if self._photos == nil {
+                self._photos = [Photo]()
+            }
+            
+            self._photos?.append(photo)
+        }
+    }
     
     var userFolder: URL {
             var userFolder = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
@@ -28,9 +62,7 @@ class User {
             }
             return userFolder
     }
-    
-    
-    
+
     
     init?(dictionary: NSDictionary) {
         guard let userInfo = dictionary["person"] as? NSDictionary else {
@@ -50,7 +82,7 @@ class User {
         realName = userInfo["realname"] as? String
         
         icon = Icon(dictionary: userInfo, owner: self)
-        getPhotos()
+        getPhotosFromDataProvider()
         
         NotificationCenter.default.addObserver(self, selector: #selector(photoUpdated(notification:)), name: .iconUpdated, object: nil)
     }
@@ -59,37 +91,28 @@ class User {
         NotificationCenter.default.removeObserver(self)
     }
     
-    func getPhotos() {
-        DataProvider.instance.getPhotosInfoForUser(user: self) { [weak self] (dictionary) in
-            //TODO: realization
-            print(dictionary)
-            
+    func getPhotosFromDataProvider() {
+        DataProvider.instance.getPhotosInfoForUser(user: self) {
+            [weak self] (dictionary) in
+   
             if let photosInfo = dictionary["photos"] as? NSDictionary,
-                let photos = photosInfo["photo"] as? NSArray {
-                for photo in photos {
+                let receivedPhotos = photosInfo["photo"] as? NSArray {
+                for photo in receivedPhotos {
                     if let strongSelf = self,
                         let photoDictionary = photo as? NSDictionary,
                         let photo = Photo(dictionary: photoDictionary, owner: strongSelf) {
-                        self?.addPhoto(photo: photo)
+                        
+                        self?.addPhoto(photo)
                     }
                 }
             }
         }
     }
     
-    func addPhoto(photo: Photo) {
-        if photos == nil {
-            photos = [Photo]()
+    @objc func photoUpdated(notification: Notification) {
+        if let object = notification.object as? Icon, icon === object {
+            NotificationCenter.default.post(name: .userUpdated, object: self)
         }
-        
-        photos?.append(photo)
     }
     
-    @objc func photoUpdated(notification: Notification) {
-        if let object = notification.object as? Icon {
-            if icon === object {
-                NotificationCenter.default.post(name: .userUpdated, object: self)
-            }
-        }
-    }
 }
